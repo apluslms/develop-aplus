@@ -1,0 +1,43 @@
+{
+    "configurations": [
+        {
+            "name": "Attach: A+",
+            "type": "python",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 5678
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/a-plus",
+                    "remoteRoot": "/srv/aplus"
+                }
+            ]
+        },
+        {
+            "name": "Attach: MOOC",
+            "type": "python",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 5679
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/mooc-grader",
+                    "remoteRoot": "/srv/grader"
+                }
+            ]
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Attach: A+/MOOC",
+            "configurations": [
+                "Attach: A+",
+                "Attach: MOOC"
+            ]
+        }
+    ]
+}

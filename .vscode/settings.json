@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "mooc-grader",
+        "a-plus"
+    ]
+}
