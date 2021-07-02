@@ -14,15 +14,20 @@
 2. Wait for the containers to be ready (takes a few seconds)
 3. Attach to the containers with the `Attach: A+/MOOC` debug configuration
 
-## Only debugging one project
+### Only debugging one project
 
 1. Comment out (#) the `command: ...` line corresponding to the project you do not want to debug
 2. Follow the debugging instructions above but attach only to the container you want to debug
 
-## Run without debugging
+### Run without debugging
 
 1. Comment out both commands as [above](#only-debugging-one-project)
 2. Run the containers with `docker-compose up [-d]`
+
+## Running tests
+
+Run `docker-compose -f docker-compose.test.yml up plus_unit` for A+ unit tests.
+Run `docker-compose -f docker-compose.test.yml up plus_selenium` for A+ selenium tests.
 
 ## Notes
 
