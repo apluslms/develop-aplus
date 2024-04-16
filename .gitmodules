@@ -1,6 +1,15 @@
-[submodule "a-plus"]
-	path = a-plus
-	url = git@github.com:apluslms/a-plus.git
 [submodule "mooc-grader"]
 	path = mooc-grader
 	url = git@github.com:apluslms/mooc-grader.git
+[submodule "gitmanager"]
+	path = gitmanager
+	url = git@github.com:apluslms/gitmanager.git
+[submodule "aplus-manual"]
+	path = aplus-manual
+	url = git@github.com:apluslms/aplus-manual.git
+[submodule "mooc-jutut"]
+	path = mooc-jutut
+	url = git@github.com:apluslms/mooc-jutut.git
+[submodule "a-plus"]
+	path = a-plus
+	url = git@github.com:apluslms/a-plus.git

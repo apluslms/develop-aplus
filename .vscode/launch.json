@@ -1,43 +1,69 @@
 {
+    "version": "1.0.0",
     "configurations": [
         {
-            "name": "Attach: A+",
-            "type": "python",
+            "name": "Remote Attach to A+",
+            "type": "debugpy",
             "request": "attach",
             "connect": {
                 "host": "localhost",
-                "port": 5678
+                "port": 5677
             },
             "pathMappings": [
                 {
                     "localRoot": "${workspaceFolder}/a-plus",
                     "remoteRoot": "/srv/aplus"
                 }
-            ]
+            ],
+            "justMyCode": false
         },
         {
-            "name": "Attach: MOOC",
-            "type": "python",
+            "name": "Remote Attach to MOOC-Grader",
+            "type": "debugpy",
             "request": "attach",
             "connect": {
                 "host": "localhost",
-                "port": 5679
+                "port": 5676
             },
             "pathMappings": [
                 {
                     "localRoot": "${workspaceFolder}/mooc-grader",
                     "remoteRoot": "/srv/grader"
                 }
-            ]
-        }
-    ],
-    "compounds": [
+            ],
+            "justMyCode": false
+        },
         {
-            "name": "Attach: A+/MOOC",
-            "configurations": [
-                "Attach: A+",
-                "Attach: MOOC"
-            ]
+            "name": "Remote Attach to Gitmanager",
+            "type": "debugpy",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 5675
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/gitmanager",
+                    "remoteRoot": "/srv/gitmanager"
+                }
+            ],
+            "justMyCode": false
+        },
+        {
+            "name": "Remote Attach to MOOC-Jutut",
+            "type": "debugpy",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 5674
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/mooc-jutut",
+                    "remoteRoot": "/srv/jutut"
+                }
+            ],
+            "justMyCode": false
         }
     ]
 }

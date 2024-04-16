@@ -1,0 +1,123 @@
+# Use this Docker Compose file if you want to run A+ with MOOC-Grader and Git manager.
+# You have to first build the course on Git manager before the course content becomes visible on A+.
+
+version: '3'
+
+volumes:
+  data:
+  rubyricdb:
+
+services:
+  socat:
+    image: alpine/socat
+    command: TCP4-LISTEN:2375,fork,reuseaddr UNIX-CONNECT:/var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    expose:
+      - "2375"
+  plus:
+    image: apluslms/run-aplus-front
+    command: "python3 -m debugpy --listen 0.0.0.0:5677 manage.py runserver 0.0.0.0:8000"
+    environment:
+      APLUS_ENABLE_DJANGO_DEBUG_TOOLBAR: 'false'
+      USE_GITMANAGER: 'true'
+    volumes:
+      - data:/data
+
+      # Mount A+ development code
+      - ./a-plus/:/srv/aplus/:ro
+    ports:
+      - "8000:8000"
+      - "5677:5677"
+    depends_on:
+      - acos
+      - rubyric
+      - grader
+      - gitmanager
+  grader:
+    image: apluslms/run-mooc-grader
+    command: "python3 -m debugpy --listen 0.0.0.0:5676 manage.py runserver 0.0.0.0:8080"
+    volumes:
+      - data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/aplus:/tmp/aplus
+
+      # Mount MOOC-Grader development code
+      # - ./mooc-grader/:/srv/grader/
+    environment:
+      - DOCKER_HOST=tcp://socat:2375
+    links:
+      - socat
+    ports:
+      - "8080:8080"
+      - "5676:5676"
+    depends_on:
+      - gitmanager
+  gitmanager:
+    image: apluslms/run-gitmanager
+    command: "python3 -m debugpy --listen 0.0.0.0:5675 manage.py runserver 0.0.0.0:8070"
+    environment:
+      HUEY_IMMEDIATE: 'true'
+    volumes:
+      - data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/aplus:/tmp/aplus
+
+      # Mount Git manager development code
+      - ./gitmanager/:/srv/gitmanager/:ro
+
+      # Add aplus-manual course to Git manager
+      - ./aplus-manual/:/srv/courses/source/default:ro
+      # Or add some other course
+      # - $HOME/y1/:/srv/courses/source/default:ro
+    ports:
+      - "8070:8070"
+      - "5680:5678"
+  jutut:
+    image: apluslms/run-mooc-jutut
+    command: "python3 -m debugpy --listen 0.0.0.0:5674 manage.py runserver 0.0.0.0:8082"
+    volumes:
+      - data:/data
+
+      # Mount MOOC-Jutut development code
+      # - ./mooc-jutut/:/srv/jutut/:ro
+    ports:
+      - "8082:8082"
+      - "5674:5674"
+  acos:
+    image: apluslms/run-acos-server
+    user: $USER_ID:$USER_GID
+    ports:
+      - "3000:3000"
+  radar:
+    image: apluslms/run-radar
+    ports:
+      - "8001:8001"
+      # Django debug
+      - "5678:5678"
+      # Celery debug
+      - "5679:5679"
+      # Flower (celery dashboard)
+      - "5555:5555"
+    depends_on:
+      - plus
+      - grader
+    volumes:
+      - data:/data
+  rubyric:
+    image: apluslms/run-rubyric
+    volumes:
+      - data:/data
+    ports:
+      - "8091:8091"
+    depends_on:
+      - rubyricdb
+  rubyricdb:
+    image: postgres:13-bullseye
+    restart: always
+    environment:
+      POSTGRES_USER: rubyric
+      POSTGRES_PASSWORD: rubyric
+      POSTGRES_DB: rubyric
+    volumes:
+      - rubyricdb:/var/lib/postgresql/data
