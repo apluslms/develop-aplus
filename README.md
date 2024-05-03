@@ -22,7 +22,7 @@
 Done!
 
 The A+ development code in the `a-plus` submodule has been mounted and your code changes in the `a-plus`
-directory are now visible at `http://localhost:8000/`. To mount development code for the other services, edit the
+directory are now visible at http://localhost:8000/. To mount development code for the other services, edit the
 `docker-compose.yml` by uncommenting the relevant lines under the `volumes` section.
 
 After the development environment has been initialized once by running `./init-env.sh`,
