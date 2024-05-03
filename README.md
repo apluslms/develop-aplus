@@ -118,6 +118,11 @@ Run Playwright end-to-end tests only:
 pytest e2e_tests
 ```
 
+Run and debug Playwright end-to-end tests:
+```
+PWDEBUG=1 pytest -s e2e_tests
+```
+
 Run unit tests only:
 ```
 pytest --ignore=e2e_tests
@@ -127,6 +132,7 @@ An alternative way to run A+ unit tests only:
 ```
 python3 manage.py test
 ```
+
 
 ### MOOC-Grader tests
 
