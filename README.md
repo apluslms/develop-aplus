@@ -120,7 +120,7 @@ pytest e2e_tests
 
 Run and debug Playwright end-to-end tests:
 ```
-PWDEBUG=1 pytest -s e2e_tests
+PWDEBUG=1 pytest -s -k <test_method_name> e2e_tests
 ```
 
 Run unit tests only:
