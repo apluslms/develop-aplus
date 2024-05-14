@@ -109,8 +109,10 @@ source .venv/bin/activate
 The A+ tests can be run conveniently in VSCode's `Testing tab`.
 
 If the `Testing tab` is missing or does not immediately show any tests, make sure to first open the
-`develop-aplus` directory in VSCode as a [VSCode Workspace](https://code.visualstudio.com/docs/editor/workspaces)
-and then activate the correct Python interpreter in VSCode.
+`develop-aplus` directory in VSCode as a [VSCode Workspace](https://code.visualstudio.com/docs/editor/workspaces).
+Next, install the
+[VSCode Python extension by microsoft](https://marketplace.visualstudio.com/items?itemName=ms-python.python) and then
+activate the correct Python interpreter in VSCode.
 Selecting the interpreter is done by pressing `Ctrl + Shift + P` (or `Cmd + Shift + P` on macOS) and searching for
 `Python: Select Interpreter`. Select the Python virtual environment interpreter located at `.venv/bin/python`.
 
