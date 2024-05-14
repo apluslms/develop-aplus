@@ -64,19 +64,19 @@ How to add your forked `a-plus` repository to the submodule as a remote and push
     ```
 2. Add your fork as a remote and give it a name, such as your GitHub username
     ```
-    git remote add myusername git@github.com:myusername/a-plus.git
-    git fetch myusername
+    git remote add <myusername> git@github.com:<myusername>/a-plus.git
+    git fetch <myusername>
     ```
 3. Create a new branch for the new code changes
     ```
-    git switch -c mybranch
+    git switch -c <mybranch>
     ```
 4. Make your changes
 5. Push the changes to your forked repository
     ```
     git add somefile.py
     git commit
-    git push myusername
+    git push <myusername>
     ```
 6. Create a GitHub pull request
 
@@ -131,14 +131,19 @@ Run Playwright end-to-end tests only:
 pytest e2e_tests
 ```
 
-Run and debug Playwright end-to-end tests:
+Run and debug a specific Playwright end-to-end test:
 ```
-PWDEBUG=1 pytest -s -k <test_method_name> e2e_tests
+PWDEBUG=1 pytest -s -k <test_method_name>
 ```
 
 Run unit tests only:
 ```
 pytest --ignore=e2e_tests
+```
+
+Run and debug a specific unit test:
+```
+pytest -s -k <test_method_name>
 ```
 
 An alternative way to run A+ unit tests only:
