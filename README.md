@@ -2,19 +2,32 @@
 
 ## Getting started
 
-1. Clone the repository
+1. Install required software
+    ```
+    # Aalto Linux
+    pkcon install gettext python3-venv
+
+    # Debian-based Linux with administrator permissions
+    sudo apt update
+    sudo apt install gettext python3-venv
+
+    # Apple macOS
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    brew install gettext
+    ```
+2. Clone the repository
     ```
     git clone git@github.com:apluslms/develop-aplus.git
     ```
-2. Move to the directory
+3. Move to the directory
     ```
     cd develop-aplus
     ```
-3. Initialize the development environment and activate the Python virtual environment
+4. Initialize the development environment and activate the Python virtual environment
     ```
     source ./init-env.sh
     ```
-4. Run the Docker containers
+5. Run the Docker containers
     ```
     ./docker-up.sh
     ```
