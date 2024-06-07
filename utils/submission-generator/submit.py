@@ -22,8 +22,7 @@ total_tasks_done = {
     'questionnaire': 0,
     'page': 0,
 }
-user_tasks_done_lock = Lock()
-total_tasks_done_lock = Lock()
+tasks_lock = Lock()
 print_lock = Lock()
 
 
@@ -167,9 +166,8 @@ def time_requests(
         else:
             raise Exception(f"Unknown group: {group}")
         batch_tasks_done += 1
-        with user_tasks_done_lock:
+        with tasks_lock:
             user_tasks_done[user][group] += 1
-        with total_tasks_done_lock:
             total_tasks_done[group] += 1
         if duration:
             batch_completed = (time.time() - start_time + delay_adjusted) >= (duration * 60)
