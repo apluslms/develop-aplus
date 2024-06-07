@@ -1,0 +1,6 @@
+field_1: b
+field_2: a
+field_3:
+  - a
+  - c
+field_4: c

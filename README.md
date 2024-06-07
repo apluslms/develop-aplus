@@ -178,6 +178,12 @@ Run all tests inside a Docker container:
 docker-compose -f docker-compose.test.yml up gitmanager_unit
 ```
 
+## How to generate/post submissions to A+ automatically
+
+Run `./generate-submissions.sh` in the root of this repository.
+
+Check the [README.md](utils/submission-generator/README.md) in the `utils/submission-generator` directory.
+
 ## Updating the submodules in this repository
 
 To keep this repository up-to-date, pull the newest changes to the submodules:

@@ -9,7 +9,7 @@ if ! [ -d ".venv" ]; then
     # Create and activate virtual environment if it doesn't exist yet
     python3 -m venv .venv
     source .venv/bin/activate
-    python3 -m pip install setuptools -r a-plus/requirements.txt -r a-plus/requirements_testing.txt
+    python3 -m pip install setuptools pyyaml -r a-plus/requirements.txt -r a-plus/requirements_testing.txt
     playwright install
 else
     # Activate virtual environment if it exists already

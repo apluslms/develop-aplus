@@ -4,3 +4,4 @@ __pycache__/
 .venv
 
 docker-compose.yml
+utils/submission-generator/config.yaml
