@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # User ID range to generate submissions for
-MIN_USER_ID=5
-MAX_USER_ID=9
+MIN_USER_ID=7
+MAX_USER_ID=16
 
 # Create utils/submission-generator/config.yaml if it doesn't exist yet
 if ! [ -f "utils/submission-generator/config.yaml" ]; then
