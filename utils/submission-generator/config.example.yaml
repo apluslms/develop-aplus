@@ -3,19 +3,19 @@ host_url: http://localhost:8000
 # password: student
 api_tokens_file: "" # If empty, use username and password or supply API tokens to submit.py as command line arguments
 course_id: 1
-global_duration_minutes: 120 # If specified, the script will stop after this many minutes, otherwise 'count' is used
+global_duration_minutes: 10 # If specified, the script will stop after this many minutes, otherwise 'count' is used
 groups:
   # This group is used to submit files to the specified URIs
   submit:
     # This batch always submits files to the same URI
-    - count: 100
+    - count: 12
       interval_milliseconds: 2000
       interval_std_deviation: 400
       uris:
         programming_exercises_graderutils_hello:
           file1: functions
     # This batch randomly submits files to one of the specified URIs
-    - count: 100
+    - count: 20
       interval_milliseconds: 4000
       interval_std_deviation: 800
       uris:
@@ -27,12 +27,26 @@ groups:
 
   # This group is used to submit questionnaire answers to the specified URIs
   questionnaire:
-    - count: 100
+    - count: 20
       interval_milliseconds: 2000
       interval_std_deviation: 400
       uris:
         - questionnaires_questionnaires_questionnaire_demo
         - questionnaires_questionnaires_questionnaire_text_demo
+    - count: 3
+      interval_milliseconds: 2000
+      interval_std_deviation: 400
+      uris:
+        - jutut_introduction_feedback
+        - jutut_features_and_hints_feedback
+    - count: 1
+      interval_milliseconds: 2000
+      interval_std_deviation: 400
+      uris:
+        # generate less external than normal
+        - overview_enrollment_en_enrollexercise
+        - overview_enrollment_en_enrollexercise
+        - overview_enrollment_external_en_enrollexternalexercise
 
   # This group is used to randomly send GET requests to one of the specified URIs
   # page:
