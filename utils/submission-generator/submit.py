@@ -280,21 +280,22 @@ with requests.Session() as session:
         }
         for group in config['groups']:
             for batch in config['groups'][group]:
-                Thread(
-                    target=time_requests,
-                    args=(
-                        host_url,
-                        course_details_dict,
-                        exercise_post_urls_and_ids,
-                        group,
-                        batch,
-                        start_time,
-                        duration,
-                        session,
-                        user_count,
-                        user,
-                    )
-                ).start()
+                if duration or batch.get('count'):
+                    Thread(
+                        target=time_requests,
+                        args=(
+                            host_url,
+                            course_details_dict,
+                            exercise_post_urls_and_ids,
+                            group,
+                            batch,
+                            start_time,
+                            duration,
+                            session,
+                            user_count,
+                            user,
+                        )
+                    ).start()
     else:
         user_count = len(api_tokens)
         for i, api_token in enumerate(api_tokens):
@@ -311,18 +312,19 @@ with requests.Session() as session:
                 })
                 for group in config['groups']:
                     for batch in config['groups'][group]:
-                        Thread(
-                            target=time_requests,
-                            args=(
-                                host_url,
-                                course_details_dict,
-                                exercise_post_urls_and_ids,
-                                group,
-                                batch,
-                                start_time,
-                                duration,
-                                session2,
-                                user_count,
-                                user,
-                            ),
-                        ).start()
+                        if duration or batch.get('count'):
+                            Thread(
+                                target=time_requests,
+                                args=(
+                                    host_url,
+                                    course_details_dict,
+                                    exercise_post_urls_and_ids,
+                                    group,
+                                    batch,
+                                    start_time,
+                                    duration,
+                                    session2,
+                                    user_count,
+                                    user,
+                                ),
+                            ).start()

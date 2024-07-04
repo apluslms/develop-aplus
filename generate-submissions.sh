@@ -4,8 +4,6 @@
 MIN_USER_ID=5
 MAX_USER_ID=9
 
-scriptpath=$(dirname $(realpath "$0"))
-
 # Create utils/submission-generator/config.yaml if it doesn't exist yet
 if ! [ -f "utils/submission-generator/config.yaml" ]; then
     echo "Creating 'utils/submission-generator/config.yaml' from 'utils/submission-generator/config.example.yaml' since it does not exist yet..."
@@ -27,4 +25,4 @@ EOF
 tokens=($output)
 
 # Pass the tokens as command line arguments
-python3 "$scriptpath"/utils/submission-generator/submit.py "${tokens[@]}"
+python3 utils/submission-generator/submit.py "${tokens[@]}"
