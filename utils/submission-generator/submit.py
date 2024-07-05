@@ -174,8 +174,8 @@ def time_requests(
         else:
             batch_completed = batch_tasks_done == batch['count_per_user']
         if batch_completed:
+            print_status(total_tasks_done, user, group, request_type)
             break
-
         time.sleep(delay_adjusted)
 
 
@@ -269,6 +269,7 @@ with requests.Session() as session:
     print_progress_bar(i + 1, total_count, prefix="Progress:", suffix="Complete", length=32)
 
     # Do tasks
+    threads = []
     start_time = time.time()
     if username and password:
         user_count = 1
@@ -281,7 +282,7 @@ with requests.Session() as session:
         for group in config['groups']:
             for batch in config['groups'][group]:
                 if duration or batch.get('count_per_user'):
-                    Thread(
+                    thread = Thread(
                         target=time_requests,
                         args=(
                             host_url,
@@ -295,7 +296,9 @@ with requests.Session() as session:
                             user_count,
                             user,
                         )
-                    ).start()
+                    )
+                    threads.append(thread)
+                    thread.start()
     else:
         user_count = len(api_tokens)
         for i, api_token in enumerate(api_tokens):
@@ -313,7 +316,7 @@ with requests.Session() as session:
                 for group in config['groups']:
                     for batch in config['groups'][group]:
                         if duration or batch.get('count_per_user'):
-                            Thread(
+                            thread = Thread(
                                 target=time_requests,
                                 args=(
                                     host_url,
@@ -327,4 +330,10 @@ with requests.Session() as session:
                                     user_count,
                                     user,
                                 ),
-                            ).start()
+                            )
+                            threads.append(thread)
+                            thread.start()
+    for thread in threads:
+        thread.join()
+    print("\033[7B", end='') # Move the cursor down by 7 lines
+    print("All tasks done!")

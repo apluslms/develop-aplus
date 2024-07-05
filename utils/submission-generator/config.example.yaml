@@ -8,7 +8,7 @@ groups:
   # This group is used to submit files to the specified URIs
   submit:
     # This batch always submits files to the same URI
-    - count_per_user: 12
+    - count_per_user: 10
       interval_milliseconds: 2000
       interval_std_deviation: 400
       uris:
@@ -43,14 +43,14 @@ groups:
       interval_milliseconds: 2000
       interval_std_deviation: 400
       uris:
-        # generate less external than normal
+        # Submit less external than normal
         - overview_enrollment_en_enrollexercise
         - overview_enrollment_en_enrollexercise
         - overview_enrollment_external_en_enrollexternalexercise
 
-  # This group is used to randomly send GET requests to one of the specified URIs
+  # This group is used to send GET requests to the specified URIs
   # page:
-  #   - count_per_user: 100
+  #   - count_per_user: 10
   #     interval_milliseconds: 2000
   #     interval_std_deviation: 400
   #     uris:
