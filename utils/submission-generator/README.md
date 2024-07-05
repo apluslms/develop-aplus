@@ -10,10 +10,10 @@ If using `submit.py` directly, supply API tokens for users as command line argum
 - Most of the settings are defined in `config.yaml`
   - If `config.yaml` doesn't exist, the [`generate-submissions.sh`](/generate-submissions.sh) script will create it by copying the file [`config.example.yaml`](config.example.yaml).
     You can of course create the file manually if you wish to change the settings before generating submissions.
-- If you want to set a limit for the submission counts, in the `config.yaml` file, comment out the variable `global_duration_minutes` and change the `count` variables of each batch to a desired number.
-  The count indicates how many submissions are made in that batch per user.
+- If you want to set a limit for the submission counts, in the `config.yaml` file, comment out the variable `global_duration_minutes` and change the `count_per_user` values of each batch to a desired number.
+  The value for `count_per_user` indicates how many submissions are made in that batch per user.
   For each submission, the script selects a random exercise from the URI list for that batch and creates a submission (with a randomly selected file or combination of files from the directory of files for that exercise).
-- If the variable `global_duration_minutes` is defined, submissions are generated until the script stops when that many minutes have passed or the script is stopped with `CTRL + C` (i.e. the `count` values are ignored).
+- If the variable `global_duration_minutes` is defined, submissions are generated until the script stops when that many minutes have passed or the script is stopped with `CTRL + C` (i.e. the `count_per_user` values are ignored).
 
 ### Submitters
 

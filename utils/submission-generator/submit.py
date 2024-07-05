@@ -172,7 +172,7 @@ def time_requests(
         if duration:
             batch_completed = (time.time() - start_time + delay_adjusted) >= (duration * 60)
         else:
-            batch_completed = batch_tasks_done == batch['count']
+            batch_completed = batch_tasks_done == batch['count_per_user']
         if batch_completed:
             break
 
@@ -280,7 +280,7 @@ with requests.Session() as session:
         }
         for group in config['groups']:
             for batch in config['groups'][group]:
-                if duration or batch.get('count'):
+                if duration or batch.get('count_per_user'):
                     Thread(
                         target=time_requests,
                         args=(
@@ -312,7 +312,7 @@ with requests.Session() as session:
                 })
                 for group in config['groups']:
                     for batch in config['groups'][group]:
-                        if duration or batch.get('count'):
+                        if duration or batch.get('count_per_user'):
                             Thread(
                                 target=time_requests,
                                 args=(
