@@ -1,7 +1,5 @@
 # Use this Docker Compose file if you want to run A+ and MOOC-Grader without Git manager.
 
-version: '3'
-
 volumes:
   data:
   rubyricdb:

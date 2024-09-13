@@ -1,8 +1,6 @@
 # Use this Docker Compose file if you want to run A+ with MOOC-Grader and Git manager.
 # You have to first build the course on Git manager before the course content becomes visible on A+.
 
-version: '3'
-
 volumes:
   data:
   rubyricdb:
