@@ -13,14 +13,12 @@ if ! [ -d ".venv" ]; then
     playwright install
 else
     # Activate virtual environment if it exists already
-    source .venv/bin/activate
+    source ".venv/bin/activate"
 fi
 
 # Move to aplus-manual directory and build the course if it hasn't been built yet
 if ! [ -d aplus-manual/_build ]; then
-    cd aplus-manual
-    ./docker-compile.sh
-    cd ..
+    ( cd aplus-manual && ./docker-compile.sh && cd .. ) || { echo "Failed to build course!"; exit 1; }
 fi
 
 # Create a-plus/aplus/local_settings.py if it doesn't exist yet
