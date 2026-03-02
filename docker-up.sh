@@ -41,28 +41,37 @@ has_acos_log=$(grep -F "$ACOS_LOG_PATH" "$COMPOSE_FILE"|grep -vE '^\s*#')
 export COMPOSE_PROJECT_NAME USER_ID USER_GID DOCKER_GID
 
 pid=
-keep=
 onexit() {
     trap - INT
     # Send SIGHUP to the childs of docker compose to silence their output (detach them from controlling tty)
-    # and then stop containers.
-    [ "$pid" ] && { pkill -SIGHUP -P $pid; docker compose stop; } || true
-    wait
-    if [ "$keep" = "" ]; then
-        clean
+    [ "$pid" ] && { pkill -SIGHUP -P $pid; } || true
+    if [ -t 0 ]; then
+        stty sane
+    fi
+    echo
+    read -rp "  Remove persistent data? [y/N] " confirm
+    if [[ "$confirm" =~ ^[Yy]$ ]]; then
+        # Stop containers and remove volumes
+        COMPOSE_ANSI=never docker compose down --volumes --remove-orphans
+        wait
+        remove_data
     else
-        echo "Data was not removed. You can remove it with: $0 --clean"
+        # Stop containers
+        COMPOSE_ANSI=never docker compose stop
+        wait
+        echo -e "\nData was not removed. You can remove it with: $0 --clean"
     fi
     rm -rf /tmp/aplus || true
-    if [ -t 0 ]; then
-      stty sane
-    fi
     exit 0
 }
 
 clean() {
     echo " !! Removing persistent data !! "
-    docker compose down --volumes --remove-orphans
+    COMPOSE_ANSI=never docker compose down --volumes --remove-orphans
+    remove_data
+}
+
+remove_data() {
     if [ "$DATA_PATH" -a -e "$DATA_PATH" ]; then
         echo "Removing $DATA_PATH"
         rm -rf "$DATA_PATH" || true
@@ -105,7 +114,7 @@ fi
 
 mkdir -p /tmp/aplus
 trap onexit INT
-docker compose up & pid=$!
+setsid docker compose up & pid=$!
 
 help_n=4 # Show first info after 24 seconds
 while kill -0 $pid 2>/dev/null; do
@@ -115,11 +124,6 @@ while kill -0 $pid 2>/dev/null; do
     [[ $? != 0 ]] && { ((--help_n > 0)) && continue || help_n=50; }
     case "$i" in
         q|Q) break ;;
-        s|S) keep="x" ; break ;;
-        $'\e') # Escape (ESC or ANSI code)
-            read -rsn1 -t 0.01 i # Try to read a second byte
-            [ $? -eq 142 ] && { keep="x"; break; } # Timeout -> no second byte -> plain ESC
-            ;;
     esac
 
     # Print status and help
@@ -127,8 +131,7 @@ while kill -0 $pid 2>/dev/null; do
     echo "  List of alive containers:"
     { docker container ls --filter "name=^${COMPOSE_PROJECT_NAME}-"  --format "{{.ID}}" | xargs docker container inspect --format '	{{.Name}}	{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}	{{range $p, $conf := .NetworkSettings.Ports}}{{$p}} {{end}}'; } 2>/dev/null || true
     echo
-    echo "  Press Q or ^C to stop all and to remove data"
-    echo "  Press S or ESC to stop all and to keep data"
+    echo "  Press Q or ^C to stop all"
     echo
 done
 onexit
