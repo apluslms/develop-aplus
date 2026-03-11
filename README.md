@@ -5,7 +5,7 @@
 1. Install required software
     ```
     # Aalto Linux
-    pkcon install gettext python3-venv
+    pkcon install gettext python3-venv libfreetype6
 
     # Debian-based Linux with administrator permissions
     sudo apt update

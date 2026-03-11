@@ -18,7 +18,7 @@ fi
 
 # Move to aplus-manual directory and build the course if it hasn't been built yet
 if ! [ -d aplus-manual/_build ]; then
-    ( cd aplus-manual && ./docker-compile.sh && cd .. ) || { echo "Failed to build course!"; exit 1; }
+    ( cd aplus-manual && ./docker-compile.sh && cd .. ) || { echo "Failed to build course!"; return 1 2>/dev/null || exit 1; }
 fi
 
 # Create a-plus/aplus/local_settings.py if it doesn't exist yet
