@@ -114,7 +114,11 @@ fi
 
 mkdir -p /tmp/aplus
 trap onexit INT
-setsid docker compose up & pid=$!
+if [ "$OS" = 'Darwin' ]; then
+    perl -e 'use POSIX qw(setsid); setsid(); exec @ARGV' -- docker compose up & pid=$!
+else
+    setsid docker compose up & pid=$!
+fi
 
 help_n=4 # Show first info after 24 seconds
 while kill -0 $pid 2>/dev/null; do
