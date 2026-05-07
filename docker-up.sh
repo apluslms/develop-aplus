@@ -41,6 +41,12 @@ has_acos_log=$(grep -F "$ACOS_LOG_PATH" "$COMPOSE_FILE"|grep -vE '^\s*#')
 export COMPOSE_PROJECT_NAME USER_ID USER_GID DOCKER_GID
 
 pid=
+stop_requested=
+
+request_stop() {
+    stop_requested=1
+}
+
 onexit() {
     trap - INT
     # Send SIGHUP to the childs of docker compose to silence their output (detach them from controlling tty)
@@ -53,12 +59,10 @@ onexit() {
     if [[ "$confirm" =~ ^[Yy]$ ]]; then
         # Stop containers and remove volumes
         COMPOSE_ANSI=never docker compose down --volumes --remove-orphans
-        wait
         remove_data
     else
         # Stop containers
         COMPOSE_ANSI=never docker compose stop
-        wait
         echo -e "\nData was not removed. You can remove it with: $0 --clean"
     fi
     rm -rf /tmp/aplus || true
@@ -113,19 +117,21 @@ if [ $(($(date +%s) - $(date -r "$COMPOSE_FILE" +%s))) -gt 604800 ]; then
 fi
 
 mkdir -p /tmp/aplus
-trap onexit INT
+trap request_stop INT
 if [ "$OS" = 'Darwin' ]; then
     perl -e 'use POSIX qw(setsid); setsid(); exec @ARGV' -- docker compose up & pid=$!
 else
     setsid docker compose up & pid=$!
 fi
 
-help_n=4 # Show first info after 24 seconds
-while kill -0 $pid 2>/dev/null; do
+help_n=24 # Show first info after 24 seconds
+while [ -z "$stop_requested" ] && kill -0 $pid 2>/dev/null; do
     while read -rs -t 0; do read -rs -t 0.1; done # Flush input
-    read -rsn1 -t 6 i # Read a byte
-    # (1 or 142) -> timeout (6s). Show help every 50 times (every 5 minutes)
-    [[ $? != 0 ]] && { ((--help_n > 0)) && continue || help_n=50; }
+    read -rsn1 -t 1 i # Read a byte
+    read_status=$?
+    [ "$stop_requested" ] && break
+    # (1 or 142) -> timeout (1s). Show help every 300 times (every 5 minutes)
+    [[ $read_status != 0 ]] && { ((--help_n > 0)) && continue || help_n=300; }
     case "$i" in
         q|Q) break ;;
     esac
