@@ -39,6 +39,9 @@ if [ -z "$COMPOSE_FILE" ] && ! [ -f "docker-compose.yml" ]; then
     fi
 fi
 
+# Pull the latest images
+docker compose pull
+
 # Compile all translations (a-plus, mooc-grader, gitmanager, mooc-jutut)
 APLUS_SECRET_KEY_FILE=a-plus/aplus/secret_key.py python3 a-plus/manage.py compilemessages --ignore=.venv
 
