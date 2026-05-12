@@ -1,5 +1,7 @@
 #!/bin/bash
 
+APLUS_MANUAL_DIR="aplus-manual"
+
 # Fetch all submodules if the a-plus directory is empty
 if [ -z "$(ls -A a-plus)" ]; then
     git submodule update --init --recursive
@@ -17,8 +19,22 @@ else
 fi
 
 # Move to aplus-manual directory and build the course if it hasn't been built yet
-if ! [ -d aplus-manual/_build ]; then
-    ( cd aplus-manual && ./docker-compile.sh && cd .. ) || { echo "Failed to build course!"; return 1 2>/dev/null || exit 1; }
+if ! [ -d "$APLUS_MANUAL_DIR/_build" ]; then
+    ( cd "$APLUS_MANUAL_DIR" && ./docker-compile.sh && cd .. ) || { echo "Failed to build course!"; return 1 2>/dev/null || exit 1; }
+fi
+
+# If aplus-manual is a git submodule (i.e. .git is a file, not a directory),
+# promote it to a standalone repo so gitmanager can use it inside the container.
+if [ -f "$APLUS_MANUAL_DIR/.git" ]; then
+    echo "Promoting aplus-manual submodule to a standalone git repo..."
+    git_modules_dir=".git/modules/aplus-manual"
+    if [ -d "$git_modules_dir" ]; then
+        rm "$APLUS_MANUAL_DIR/.git"
+        cp -r "$git_modules_dir" "$APLUS_MANUAL_DIR/.git"
+        git config --file "$APLUS_MANUAL_DIR/.git/config" --unset core.worktree
+    else
+        echo "WARNING: $git_modules_dir not found, skipping aplus-manual git setup." >&2
+    fi
 fi
 
 # Create a-plus/aplus/local_settings.py if it doesn't exist yet
