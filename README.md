@@ -163,7 +163,7 @@ cd mooc-grader
 
 Run all tests inside a Docker container:
 ```
-docker-compose -f docker-compose.test.yml up grader_unit
+docker compose -f docker-compose.test.yml up grader_unit
 ```
 
 ### Git manager tests
@@ -175,7 +175,7 @@ cd gitmanager
 
 Run all tests inside a Docker container:
 ```
-docker-compose -f docker-compose.test.yml up gitmanager_unit
+docker compose -f docker-compose.test.yml up gitmanager_unit
 ```
 
 ## How to generate/post submissions to A+ automatically
