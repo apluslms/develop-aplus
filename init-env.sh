@@ -2,9 +2,9 @@
 
 APLUS_MANUAL_DIR="aplus-manual"
 
-# Fetch all submodules if the a-plus directory is empty
+# Fetch newest versions of all submodules if the a-plus directory is empty
 if [ -z "$(ls -A a-plus)" ]; then
-    git submodule update --init --recursive
+    git submodule update --init --remote --recursive
 fi
 
 if ! [ -d ".venv" ]; then
