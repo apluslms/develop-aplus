@@ -45,14 +45,8 @@ fi
 
 # Create docker-compose.yml if it doesn't exist yet
 if [ -z "$COMPOSE_FILE" ] && ! [ -f "docker-compose.yml" ]; then
-    OS=$(uname -s)
-    if [ "$OS" = 'Darwin' ]; then
-        echo "Creating 'docker-compose.yml' from 'docker-compose.macOS.example.yml' since it does not exist yet..."
-        cp docker-compose.macOS.example.yml docker-compose.yml
-    else
-        echo "Creating 'docker-compose.yml' from 'docker-compose.example.yml' since it does not exist yet..."
-        cp docker-compose.example.yml docker-compose.yml
-    fi
+    echo "Creating 'docker-compose.yml' from 'docker-compose.example.yml' since it does not exist yet..."
+    cp docker-compose.example.yml docker-compose.yml
 fi
 
 # Pull the latest images
