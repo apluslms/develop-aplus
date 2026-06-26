@@ -23,20 +23,6 @@ if ! [ -d "$APLUS_MANUAL_DIR/_build" ]; then
     ( cd "$APLUS_MANUAL_DIR" && ./docker-compile.sh && cd .. ) || { echo "Failed to build course!"; return 1 2>/dev/null || exit 1; }
 fi
 
-# If aplus-manual is a git submodule (i.e. .git is a file, not a directory),
-# promote it to a standalone repo so gitmanager can use it inside the container.
-if [ -f "$APLUS_MANUAL_DIR/.git" ]; then
-    echo "Promoting aplus-manual submodule to a standalone git repo..."
-    git_modules_dir=".git/modules/aplus-manual"
-    if [ -d "$git_modules_dir" ]; then
-        rm "$APLUS_MANUAL_DIR/.git"
-        cp -r "$git_modules_dir" "$APLUS_MANUAL_DIR/.git"
-        git config --file "$APLUS_MANUAL_DIR/.git/config" --unset core.worktree
-    else
-        echo "WARNING: $git_modules_dir not found, skipping aplus-manual git setup." >&2
-    fi
-fi
-
 # Create a-plus/aplus/local_settings.py if it doesn't exist yet
 if [ -z "$APLUS_LOCAL_SETTINGS" ] && ! [ -f "a-plus/aplus/local_settings.py" ]; then
     echo "Creating 'a-plus/aplus/local_settings.py' from 'a-plus/aplus/local_settings.example.py' since it does not exist yet..."
