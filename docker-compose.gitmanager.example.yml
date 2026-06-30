@@ -8,8 +8,9 @@ volumes:
 services:
   plus:
     image: apluslms/run-aplus-front
-    command: "python3 -m debugpy --listen 0.0.0.0:5677 manage.py runserver 0.0.0.0:8000"
+    command: "python3 -m debugpy --listen 0.0.0.0:5677 manage.py runserver 0.0.0.0:8000 --insecure"
     environment:
+      APLUS_DEBUG: 'true'
       APLUS_ENABLE_DJANGO_DEBUG_TOOLBAR: 'false'
       USE_GITMANAGER: 'true'
     volumes:
