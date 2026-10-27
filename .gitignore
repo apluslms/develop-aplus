@@ -2,6 +2,8 @@ __pycache__/
 .pytest_cache/
 
 .venv
+.agents/
+.codex/
 
 docker-compose.yml
 utils/submission-generator/config.yaml
